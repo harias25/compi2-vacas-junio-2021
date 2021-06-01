@@ -1,0 +1,35 @@
+import java_cup.runtime.*;
+
+parser code 
+{:
+    public void syntax_error(Symbol s){}
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{}  
+:} 
+
+terminal String PARIZQ,PARDER;
+terminal String MAS,MENOS,POR,DIVIDIDO;
+terminal String ENTERO;
+terminal String DECIMAL;
+
+non terminal ini;
+non terminal Double expresion;
+
+precedence left MAS,MENOS;
+precedence left POR,DIVIDIDO;
+precedence right UMENOS; 
+
+start with ini; 
+
+ini ::=
+        expresion;
+
+expresion  ::= 
+    expresion:a MAS        expresion:b     {:RESULT=a+b;:}
+ |  expresion:a MENOS      expresion:b     {:RESULT=a-b;:}
+ |  expresion:a POR        expresion:b     {:RESULT=a*b;:}
+ |  expresion:a DIVIDIDO   expresion:b     {:RESULT=a/b;:}
+ |  ENTERO:a                               {:RESULT=new Double(a);:}
+ |  DECIMAL:a                              {:RESULT=new Double(a);:}
+ |  PARIZQ expresion:a PARDER              {:RESULT=a;:}
+;

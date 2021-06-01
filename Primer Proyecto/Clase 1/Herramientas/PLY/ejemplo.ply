@@ -1,0 +1,95 @@
+tokens = (
+    "PARIZQ",
+    "PARDER",
+    "MAS",
+    "MENOS",
+    "POR",
+    "DIVIDIDO",
+    "DECIMAL",
+    "ENTERO"
+)
+
+# Tokens
+t_PARIZQ    = r'\('
+t_PARDER    = r'\)'
+t_MAS       = r'\+'
+t_MENOS     = r'-'
+t_POR       = r'\*'
+t_DIVIDIDO  = r'/'
+
+def t_DECIMAL(t):
+    r'\d+\.\d+'
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        print("Floaat value too large %d", t.value)
+        t.value = 0
+    return t
+
+def t_ENTERO(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print("Integer value too large %d", t.value)
+        t.value = 0
+    return t
+
+# Ignorar
+t_ignore = " \t"
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += t.value.count("\n")
+    
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
+
+# Analizador Léxico
+import ply.lex as lex
+lexer = lex.lex()
+
+# Precedencia
+precedence = (
+    ('left','MAS','MENOS'),
+    ('left','POR','DIVIDIDO')
+)
+
+# Definicion de la gramatica
+def p_expresion(t):
+    'START : SUM'
+    print(str(t[1]))
+
+def p_sum(t):
+    '''SUM :  EXP MAS EXP
+            | EXP MENOS EXP
+            | EXP POR EXP
+            | EXP DIVIDIDO EXP'''
+    if t[2] == '+'  : t[0] = t[1] + t[3]
+    elif t[2] == '-': t[0] = t[1] - t[3]
+    elif t[2] == '*': t[0] = t[1] * t[3]
+    elif t[2] == '/': t[0] = t[1] / t[3]
+
+def p_expresion_agrupacion(t):
+    'EXP : PARIZQ EXP PARDER'
+    t[0] = t[2]
+
+def p_expresion_number(t):
+    '''EXP :  ENTERO
+            | DECIMAL'''
+    t[0] = t[1]
+
+def p_error(t):
+    print("Error sintáctico en '%s'" % t.value)
+
+import ply.yacc as yacc
+parser = yacc.yacc()
+
+'''
+Para utilizar este se deberia de agregar las siguientes lineas de codigo
+'''
+parser.parse(input)
+'''
+Donde input es la entrada
+'''
