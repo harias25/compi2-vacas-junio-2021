@@ -28,7 +28,6 @@ BSL                                 "\\".
 "true"                      return 'true';
 "false"                     return 'false';
 
-
 "+"                         return 'plus';
 "-"                         return 'minus';
 "*"                         return 'times';
@@ -128,7 +127,7 @@ EXPR:
                                                                                                                         }
 
     | null                                                                                                             {
-                                                                                                                            $$ = new Primitivo(@1.first_line, @1.first_column);
+                                                                                                                            $$ = new Primitivo(null, @1.first_line, @1.first_column);
                                                                                                                         }
 
     | true                                                                                                             {

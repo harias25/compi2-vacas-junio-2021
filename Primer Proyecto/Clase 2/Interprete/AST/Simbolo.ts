@@ -18,10 +18,10 @@ export class Simbolo implements Expresion {
     }
 
     getTipo(ent: Entorno, arbol: AST): Tipo {
-        throw new Error("Method not implemented.");
+        return this.tipo;
     }
     getValorImplicito(ent: Entorno, arbol: AST) {
-        throw new Error("Method not implemented.");
+        return this.valor;
     }
     
 }

@@ -19,7 +19,7 @@ export class Print implements Instruccion{
         if(valor!==null){
             console.log('>',valor);
         }else{
-            
+            console.log('>> Error, no se pueden imprimir valores nulos');
         }
     }
 
