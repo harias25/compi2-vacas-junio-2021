@@ -1,4 +1,3 @@
-import { Console } from "console";
 import { AST } from "../AST/AST";
 import { Entorno } from "../AST/Entorno";
 import { Tipo } from "../AST/Tipo";
@@ -13,7 +12,6 @@ export enum Operador {
     MENOS_UNARIO,
     MAYOR_QUE,
     MENOR_QUE,
-    IGUAL,
     IGUAL_IGUAL,
     DIFERENTE_QUE,
     OR,
@@ -24,14 +22,14 @@ export enum Operador {
     DESCONOCIDO
 }
 
-export class Primitivo implements Expresion {
+export class Operacion implements Expresion {
     linea: number;
     columna: number;
     op_izquierda: Expresion;
     op_derecha: Expresion;
     operador: Operador;
 
-    constructor(op_izquierda:any,op_derecha:any, operacion:Operador, linea:number, columna:number){
+    constructor(op_izquierda:Expresion,op_derecha:Expresion, operacion:Operador, linea:number, columna:number){
         this.linea = linea;
         this.columna = columna;
         this.op_izquierda = op_izquierda;
@@ -62,12 +60,13 @@ export class Primitivo implements Expresion {
             
         return Tipo.VOID;
     }
+    
 
     getValorImplicito(ent: Entorno, arbol: AST) {
         if (this.operador !== Operador.MENOS_UNARIO && this.operador !== Operador.NOT){
             let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
             let op2 = this.op_derecha.getValorImplicito(ent, arbol);
-
+            
             //suma
             if (this.operador == Operador.SUMA)
             {
@@ -149,7 +148,19 @@ export class Primitivo implements Expresion {
             }
 
         }else{
-
+            let op1 = this.op_izquierda.getValorImplicito(ent, arbol);
+            if (this.operador == Operador.MENOS_UNARIO)
+            {
+                if (typeof(op1==="number"))
+                {
+                    return -1* op1;
+                }
+                else
+                {
+                    console.log("Error de tipos de datos no permitidos realizando una operación unaria");
+                    return null;
+                }
+            }
         }
         return null;
     }

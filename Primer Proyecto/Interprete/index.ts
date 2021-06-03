@@ -5,14 +5,16 @@ import { Instruccion } from "./Interfaces/Instruccion";
 const gramatica = require('./Gramatica/gramatica');
 
 function ejecutarCodigo(entrada:string){
-    const instrucciones = gramatica.parse(entrada);
+    const objetos = gramatica.parse(entrada);
 
     const entornoGlobal:Entorno = new Entorno(null);
-    const ast:AST = new AST(instrucciones);
+    //const ast:AST = new AST(instrucciones);
 
-    instrucciones.forEach((element:Instruccion) => {
-        element.ejecutar(entornoGlobal,ast);
-    });
+    
+
+    //instrucciones.forEach((element:Instruccion) => {
+    //    element.ejecutar(entornoGlobal,ast);
+    //});
 }
 
 ejecutarCodigo(`
