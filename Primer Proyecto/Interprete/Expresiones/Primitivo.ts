@@ -31,6 +31,9 @@ export class Primitivo implements Expresion {
             }
            return Tipo.DOUBLE;
         }
+        else if(valor === null){
+            return Tipo.NULL;
+        }
             
         return Tipo.VOID;
     }

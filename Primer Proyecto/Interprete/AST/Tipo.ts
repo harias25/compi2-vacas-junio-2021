@@ -5,5 +5,6 @@ export enum Tipo {
     BOOL,
     VOID,
     STRUCT,
+    NULL,
     ARRAY
 }
