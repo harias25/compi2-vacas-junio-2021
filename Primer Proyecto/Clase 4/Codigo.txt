@@ -1,0 +1,53 @@
+/libros/libro/autor 
+
+
+libros.libro.autor
+
+Instrucción
+	listaAccesos	array<string>
+						[libros, libro, autor]
+
+
+.ejectutar(ent,ast);
+{
+	//entorno global
+	if(ent.existe(listaAccesos[0])){
+		Simbolo raiz = ent.obtener(listaAccesos[0]);
+		Nodo nodo = raiz.valor;
+
+		Entorno entornoRaiz = nodo.entorno;
+		listaAccesos.pop();
+
+		string resultadod = funcionRecursiva(entornoRaiz,listaAccesos);
+
+	}
+}
+
+string funcionRecursivaGenerarXML(Nodo nodo){
+	String texto = `<${nodo.id}>${nodo.texto}</${nodo.id}>`;
+	return texto; 
+}
+
+string funcionRecursiva(Entorno ent,lista array){
+	string llave = array[0]; //libro
+	array.pop();
+	string salida = "";
+	if(ent.existe(llave)){
+		Simbolo[] simbolos = ent.obtener(llave);
+		if(array.length === 0){
+			simbolos.each(elemento:Simbolo ==>{
+				Nodo nodo = elemento.valor;
+				salida+=funcionRecursivaGenerarXML(nodo);
+			});
+		}else{
+			simbolos.each(elemento:Simbolo ==>{
+				Nodo nodo = elemento.valor;
+				Entorno entornoNodo = nodo.entorno;
+				salida+=funcionRecursiva(entornoNodo,array);
+			});
+		}		
+	}
+
+
+	return salida;
+}			
