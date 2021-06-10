@@ -1,3 +1,4 @@
+import { Entorno } from "../AST/Entorno";
 import { Atributo } from "./Atributo";
 
 export class Objeto{
@@ -7,6 +8,7 @@ export class Objeto{
     listaObjetos: Array<Objeto>;
     linea: number;
     columna: number;
+    entorno: Entorno;
 
     constructor(id:string, texto:string, linea:number, columna:number, listaAtributos:Array<Atributo>, listaO:Array<Objeto>){
         this.identificador = id;
@@ -14,6 +16,7 @@ export class Objeto{
         this.linea = linea;
         this.columna = columna;
         this.listaAtributos = listaAtributos;
-        this.listaObjetos = listaO
+        this.listaObjetos = listaO;
+        this.entorno = new Entorno(null);
     }
 }
